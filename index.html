@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Collent Tap!</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0a0a0a;
+      color: #00ff99;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      padding-top: 20px;
+      font-size: 2em;
+      color: #00ffcc;
+    }
+
+    #score, #timer {
+      text-align: center;
+      font-size: 1.5em;
+    }
+
+    #tapBtn {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #00ffcc;
+      border: 2px solid #fff;
+      font-size: 20px;
+      color: #000;
+      font-weight: bold;
+      animation: pulse 0.7s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    #endMessage {
+      display: none;
+      font-size: 2em;
+      text-align: center;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎯 COLLENT TAP!</h1>
+<div id="score">Skor: 0</div>
+<div id="timer">Waktu: 10</div>
+<div id="endMessage"></div>
+<button id="tapBtn">TAP!</button>
+
+<audio id="tapSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+
+<script>
+  const tapBtn = document.getElementById('tapBtn');
+  const scoreDisplay = document.getElementById('score');
+  const timerDisplay = document.getElementById('timer');
+  const endMessage = document.getElementById('endMessage');
+  const tapSound = document.getElementById('tapSound');
+
+  let score = 0;
+  let time = 10;
+
+  function moveButton() {
+    const x = Math.random() * (window.innerWidth - 80);
+    const y = Math.random() * (window.innerHeight - 80);
+    tapBtn.style.left = x + 'px';
+    tapBtn.style.top = y + 'px';
+  }
+
+  tapBtn.onclick = () => {
+    score++;
+    scoreDisplay.textContent = 'Skor: ' + score;
+    tapSound.currentTime = 0;
+    tapSound.play();
+    moveButton();
+  };
+
+  const countdown = setInterval(() => {
+    time--;
+    timerDisplay.textContent = 'Waktu: ' + time;
+    if (time === 0) {
+      clearInterval(countdown);
+      tapBtn.style.display = 'none';
+      endMessage.textContent = '⏱️ Waktu Habis! Skor Akhir: ' + score;
+      endMessage.style.display = 'block';
+    }
+  }, 1000);
+
+  moveButton();
+</script>
+
+</body>
+</html>
